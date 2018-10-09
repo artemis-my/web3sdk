@@ -254,6 +254,16 @@ public class Service {
 		}
 
 	}
+	
+	public void stop(){
+		logger.debug("start stop channelservice,service:"+this.orgID);
+		for(Map.Entry<String, ChannelConnections> entry: allChannelConnections.entrySet()) {
+			if(entry.getKey().equals(orgID)){
+				entry.getValue().stop();
+			}
+		}
+		logger.debug("stop channelService,service"+this.orgID);
+	}
 
 	public EthereumResponse sendEthereumMessage(EthereumRequest request) {
 		class Callback extends EthereumResponseCallback  {

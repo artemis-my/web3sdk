@@ -22,6 +22,8 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import com.alibaba.fastjson.JSON;
+
 import org.bcos.channel.dto.EthereumMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
@@ -395,6 +397,15 @@ public class ChannelConnections {
 				
 				ctx.getValue().writeAndFlush(out);
 			}
+		}
+	}
+	
+	public void stop(){
+		logger.debug("start stop netty thread");
+		EventLoopGroup group = bootstrap.config().group();
+		if(group != null && !group.isShuttingDown()){
+			group.shutdownGracefully();
+			logger.debug("shut down netty thread group,connections:{}"+JSON.toJSONString(connectionsStr));
 		}
 	}
 	
